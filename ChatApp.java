@@ -63,7 +63,7 @@ Statement st=con.createStatement();
 while((c=br.readLine())!=null){
 long dt=new java.util.Date().getTime();
 st.executeUpdate("insert into "+ChatApp.tablename+" values('client','"+c+"',"+dt+",'"+ChatApp.clientip.toString()+"',"+ChatApp.clientport+")");
-System.out.println("Received"+c);
+System.out.println("Received:"+c);
 }
 }catch(IOException e){
 System.out.println("Connection closed");
@@ -97,7 +97,6 @@ Statement st=con.createStatement();
 
 while(true){
 String str=System.console().readLine();
-System.out.println(str+"look");
 dos.writeBytes(str+"\n");
 long dt=new java.util.Date().getTime();
 st.executeUpdate("insert into "+ChatApp.tablename+" values('server','"+str+"',"+dt+",'"+ChatApp.serverip.toString()+"',"+ChatApp.serverport+")");
@@ -133,7 +132,7 @@ try{
 System.out.println("Client Reader....");
 while((c=br.readLine())!=null){
 //c=br.readLine();
-System.out.println(":Received:"+c);
+System.out.println("Received:"+c);
 }
 }catch(IOException e){
 System.out.println("Connection closed");
@@ -193,9 +192,12 @@ Connection con=Connect.connect();
 Statement st=con.createStatement();
 java.util.Date dt=new java.util.Date();
 tablename="t"+dt.hashCode();
-String sql="create table "+tablename+"(type varchar(10),line varchar(1000),dtime bigint not null primary key,ipaddress varchar(40),port int)";
 st.executeQuery("use chat");
 
+String sql="insert into master values('"+tablename+"')";
+st.executeUpdate(sql);
+
+sql="create table "+tablename+"(type varchar(10),line varchar(1000),dtime bigint not null primary key,ipaddress varchar(40),port int)";
 st.executeUpdate(sql);
 
 InputStream is=skt.getInputStream();
